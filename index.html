@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ReachConf Highlights — From URL to IRL</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%238224e3'/><polygon points='40,30 40,70 72,50' fill='white'/></svg>">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ReachConf Highlights — From URL to IRL">
+  <meta property="og:description" content="The best clips, posts, and photos from ReachConf — the Christian gaming and content creator conference.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://img.youtube.com/vi/F4Fu6vZ0Qa4/maxresdefault.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ReachConf Highlights — From URL to IRL">
+  <meta name="twitter:description" content="The best clips, posts, and photos from ReachConf.">
+
+  <!-- Preload hero thumbnails -->
+  <link rel="preload" as="image" href="https://img.youtube.com/vi/_4UPRmQ8awY/maxresdefault.jpg">
+  <link rel="preload" as="image" href="https://img.youtube.com/vi/MyYixe6RS3M/hqdefault.jpg">
+  <link rel="preload" as="image" href="https://img.youtube.com/vi/uNkiZSwhZIE/hqdefault.jpg">
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { purple: '#8224e3', orange: '#e68612' },
+            dark: { 900: '#0a0a0f', 800: '#12121a', 700: '#1a1a26', 600: '#242436' }
+          },
+          fontFamily: {
+            display: ['Orbitron', 'sans-serif'],
+            body: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background: #0a0a0f;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.02) 39px, rgba(255,255,255,0.02) 40px);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #12121a; }
+    ::-webkit-scrollbar-thumb { background: #8224e3; border-radius: 4px; }
+
+    /* Masonry grid */
+    .masonry { column-count: 3; column-gap: 1rem; }
+    @media (max-width: 768px) { .masonry { column-count: 2; } }
+    @media (max-width: 480px) { .masonry { column-count: 1; } }
+    .masonry-item { break-inside: avoid; margin-bottom: 1rem; }
+
+    /* Fade in animation */
+    .fade-in {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* Glow effects */
+    .glow-border {
+      box-shadow: 0 0 15px rgba(130, 36, 227, 0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .glow-border:hover {
+      box-shadow: 0 0 25px rgba(130, 36, 227, 0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+      transform: translateY(-4px);
+    }
+    .hero-glow { background: radial-gradient(ellipse at 50% 0%, rgba(130, 36, 227, 0.15) 0%, transparent 60%); }
+
+    /* Tab active state */
+    .tab-active { background: linear-gradient(135deg, #8224e3, #e68612); color: #fff; }
+
+    /* Platform badges */
+    .badge-youtube { background: #ff0000; }
+    .badge-tiktok { background: #000; border: 1px solid #25f4ee; }
+    .badge-twitter { background: #1da1f2; }
+
+    /* Loading skeleton */
+    .skeleton { background: linear-gradient(90deg, #1a1a26 25%, #242436 50%, #1a1a26 75%);
+      background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    /* YouTube player overlay */
+    .yt-card .play-btn { opacity: 0.7; transition: opacity 0.2s; }
+    .yt-card:hover .play-btn { opacity: 1; }
+
+    /* Embed containers */
+    .tiktok-embed-container blockquote { margin: 0 !important; }
+    .twitter-embed-container { min-height: 200px; }
+
+    /* Stats counter animation */
+    .stat-number { font-variant-numeric: tabular-nums; }
+
+    /* Lightbox */
+    .lightbox {
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .lightbox.active { opacity: 1; pointer-events: auto; }
+    .lightbox-content {
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    .lightbox.active .lightbox-content { transform: scale(1); }
+
+    /* Featured video play overlay */
+    .featured-play {
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .featured-play:hover { transform: scale(1.1); }
+  </style>
+</head>
+
+<body class="font-body text-gray-200 min-h-screen">
+
+  <!-- Video Lightbox Modal -->
+  <div id="lightbox" class="lightbox fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/80" id="lightboxBackdrop"></div>
+    <div class="lightbox-content relative w-full max-w-4xl">
+      <button id="lightboxClose" class="absolute -top-10 right-0 text-white/70 hover:text-white text-sm flex items-center gap-1 z-10">
+        <span>Close</span>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+      <div id="lightboxBody" class="rounded-xl overflow-hidden bg-black aspect-video"></div>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <header class="relative hero-glow">
+    <div class="max-w-6xl mx-auto px-4 pt-12 pb-8 text-center">
+      <img src="https://www.reachconf.org/wp-content/uploads/2024/06/cropped-logov11.png"
+           alt="ReachConf Logo" class="h-16 sm:h-20 mx-auto mb-6 drop-shadow-lg">
+      <p class="text-brand-orange font-display text-sm tracking-[0.3em] uppercase mb-4">The Christian Gaming & Creator Conference</p>
+      <h1 class="font-display font-900 text-4xl sm:text-6xl lg:text-7xl text-white mb-4 leading-tight">
+        REACH<span class="text-brand-purple">CONF</span>
+      </h1>
+      <p class="text-xl sm:text-2xl text-gray-400 mb-2">From URL to IRL — <span class="text-brand-orange">The Highlights</span></p>
+      <p class="text-gray-500 text-sm mb-6">Nov 5–7, 2026 · Orlando, FL</p>
+
+      <button id="shareBtn"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-brand-purple to-brand-orange text-white font-semibold rounded-full hover:scale-105 transition-transform cursor-pointer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"></path></svg>
+        Share This Reel
+      </button>
+    </div>
+  </header>
+
+  <!-- Animated Stats Bar -->
+  <section class="border-y border-dark-600 bg-dark-800/50">
+    <div class="max-w-4xl mx-auto px-4 py-6">
+      <div id="statsSection" class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+        <div>
+          <span class="stat-number text-brand-orange font-display text-3xl sm:text-4xl font-bold" data-target="17">0</span><span class="text-brand-orange font-display text-3xl sm:text-4xl font-bold">+</span>
+          <p class="text-gray-400 text-sm mt-1">Videos</p>
+        </div>
+        <div>
+          <span class="stat-number text-brand-orange font-display text-3xl sm:text-4xl font-bold" data-target="8">0</span><span class="text-brand-orange font-display text-3xl sm:text-4xl font-bold">+</span>
+          <p class="text-gray-400 text-sm mt-1">Creators</p>
+        </div>
+        <div>
+          <span class="stat-number text-brand-orange font-display text-3xl sm:text-4xl font-bold" data-target="3">0</span>
+          <p class="text-gray-400 text-sm mt-1">Platforms</p>
+        </div>
+        <div>
+          <span class="stat-number text-brand-orange font-display text-3xl sm:text-4xl font-bold" data-target="750">0</span><span class="text-brand-orange font-display text-3xl sm:text-4xl font-bold">+</span>
+          <p class="text-gray-400 text-sm mt-1">Attendees</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Video Section -->
+  <section class="max-w-6xl mx-auto px-4 pt-10 pb-6">
+    <h2 class="font-display text-xl text-white mb-6 flex items-center gap-2">
+      <svg class="w-5 h-5 text-brand-orange" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      Featured
+    </h2>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <!-- Main featured video -->
+      <div class="lg:col-span-2">
+        <div id="featuredMain" class="relative rounded-xl overflow-hidden bg-dark-800 glow-border cursor-pointer group" data-videoid="_4UPRmQ8awY">
+          <div class="relative aspect-video">
+            <img src="https://img.youtube.com/vi/_4UPRmQ8awY/maxresdefault.jpg" alt="Reach Conference 2026 Trailer"
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div class="featured-play absolute inset-0 flex items-center justify-center cursor-pointer">
+              <div class="w-20 h-20 rounded-full bg-brand-purple/90 flex items-center justify-center shadow-lg shadow-brand-purple/30">
+                <svg class="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <div class="absolute bottom-4 left-4 right-4">
+              <span class="badge-youtube text-white text-xs font-bold px-2 py-0.5 rounded mb-2 inline-block">YouTube</span>
+              <h3 class="text-white font-semibold text-lg leading-snug">Reach Conference 2026 Trailer</h3>
+              <p class="text-gray-300 text-sm">Reach Conference · 26 views</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Runner-up cards -->
+      <div class="flex flex-col gap-4">
+        <div class="featured-side yt-card rounded-xl overflow-hidden bg-dark-800 glow-border cursor-pointer group flex-1" data-videoid="MyYixe6RS3M">
+          <div class="relative aspect-video">
+            <img src="https://img.youtube.com/vi/MyYixe6RS3M/hqdefault.jpg" alt="Gabriel and the Guardians Panel"
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+            <div class="play-btn absolute inset-0 flex items-center justify-center bg-black/40">
+              <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center">
+                <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <span class="absolute top-2 left-2 badge-youtube text-white text-xs font-bold px-2 py-0.5 rounded">YouTube</span>
+          </div>
+          <div class="p-3">
+            <h3 class="text-white font-semibold text-sm leading-snug line-clamp-2">Gabriel and the Guardians x Bearly Biblical Full Panel</h3>
+            <p class="text-gray-400 text-xs mt-1">397 views</p>
+          </div>
+        </div>
+
+        <div class="featured-side yt-card rounded-xl overflow-hidden bg-dark-800 glow-border cursor-pointer group flex-1" data-videoid="uNkiZSwhZIE">
+          <div class="relative aspect-video">
+            <img src="https://img.youtube.com/vi/uNkiZSwhZIE/hqdefault.jpg" alt="ReachConf Memories by XtianNinja"
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">
+            <div class="play-btn absolute inset-0 flex items-center justify-center bg-black/40">
+              <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center">
+                <svg class="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+            <span class="absolute top-2 left-2 badge-youtube text-white text-xs font-bold px-2 py-0.5 rounded">YouTube</span>
+          </div>
+          <div class="p-3">
+            <h3 class="text-white font-semibold text-sm leading-snug line-clamp-2">ReachConf Memories, Pics, Vids & Stories</h3>
+            <p class="text-gray-400 text-xs mt-1">87 views</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter Tabs -->
+  <nav class="sticky top-0 z-50 bg-dark-900/90 backdrop-blur-md border-b border-dark-600">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex gap-2 overflow-x-auto">
+      <button class="tab tab-active px-5 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap" data-filter="all">All</button>
+      <button class="tab px-5 py-2 rounded-full text-sm font-semibold bg-dark-700 text-gray-400 hover:text-white transition-all whitespace-nowrap" data-filter="youtube">
+        <span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-1.5"></span>YouTube <span class="tab-count" data-platform="youtube"></span>
+      </button>
+      <button class="tab px-5 py-2 rounded-full text-sm font-semibold bg-dark-700 text-gray-400 hover:text-white transition-all whitespace-nowrap" data-filter="tiktok">
+        <span class="inline-block w-2 h-2 rounded-full bg-[#25f4ee] mr-1.5"></span>TikTok <span class="tab-count" data-platform="tiktok"></span>
+      </button>
+      <button class="tab px-5 py-2 rounded-full text-sm font-semibold bg-dark-700 text-gray-400 hover:text-white transition-all whitespace-nowrap" data-filter="twitter">
+        <span class="inline-block w-2 h-2 rounded-full bg-[#1da1f2] mr-1.5"></span>Twitter <span class="tab-count" data-platform="twitter"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Content Grid -->
+  <main class="max-w-6xl mx-auto px-4 py-8">
+    <div id="grid" class="masonry">
+      <!-- Skeleton loaders -->
+      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-64"></div></div>
+      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-48"></div></div>
+      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-56"></div></div>
+      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-40"></div></div>
+      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-52"></div></div>
+      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-44"></div></div>
+    </div>
+
+    <!-- Empty state -->
+    <div id="emptyState" class="hidden text-center py-20">
+      <p class="text-gray-500 text-lg">No content found for this filter.</p>
+    </div>
+  </main>
+
+  <!-- CTA Section -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-brand-purple/20 to-brand-orange/20"></div>
+    <div class="relative max-w-4xl mx-auto px-4 py-16 text-center">
+      <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mb-3">Join Us at ReachConf 2026</h2>
+      <p class="text-gray-400 text-lg mb-8">Nov 5–7 · Orlando, FL</p>
+      <a href="https://www.reachconf.org/" target="_blank" rel="noopener"
+         class="inline-flex items-center gap-2 px-8 py-4 bg-brand-orange text-white font-bold text-lg rounded-full hover:scale-105 transition-transform shadow-lg shadow-brand-orange/30">
+        Get Tickets
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+      </a>
+
+      <!-- Social icons -->
+      <div class="flex justify-center gap-5 mt-10">
+        <a href="https://x.com/reachconflive" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors" title="Twitter/X">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+        <a href="https://www.tiktok.com/@reachconflive" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors" title="TikTok">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.28 6.28 0 00-.79-.05 6.28 6.28 0 00-6.28 6.28 6.28 6.28 0 006.28 6.28 6.28 6.28 0 006.28-6.28V8.69a8.2 8.2 0 004.82 1.56V6.82a4.84 4.84 0 01-1-.13z"/></svg>
+        </a>
+        <a href="https://www.youtube.com/@reachconflive" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors" title="YouTube">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/reachconflive" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors" title="Facebook">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="https://discord.com/invite/VSjkVj2kJY" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors" title="Discord">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.79 19.79 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.618-1.25.077.077 0 00-.079-.037A19.74 19.74 0 003.677 4.37a.07.07 0 00-.032.028C.533 9.046-.32 13.58.099 18.058a.082.082 0 00.031.056c2.053 1.508 4.041 2.423 5.993 3.03a.078.078 0 00.084-.028c.462-.63.873-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.11 13.11 0 01-1.872-.892.077.077 0 01-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 01.078-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.009c.12.099.246.198.373.292a.077.077 0 01-.006.128 12.3 12.3 0 01-1.873.891.076.076 0 00-.041.107c.36.698.772 1.363 1.225 1.993a.076.076 0 00.084.029c1.961-.607 3.95-1.522 6.002-3.029a.077.077 0 00.031-.055c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.029zM8.02 15.331c-1.183 0-2.157-1.086-2.157-2.419s.956-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42 0 1.332-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.086-2.157-2.419s.955-2.419 2.157-2.419c1.21 0 2.176 1.096 2.157 2.42 0 1.332-.946 2.418-2.157 2.418z"/></svg>
+        </a>
+        <a href="https://www.instagram.com/reachconflive/" target="_blank" rel="noopener" class="text-gray-400 hover:text-white transition-colors" title="Instagram">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t border-dark-600 mt-0">
+    <div class="max-w-6xl mx-auto px-4 py-8 text-center text-gray-600 text-sm">
+      <p class="font-display text-brand-purple mb-1">REACHCONF</p>
+      <p>From URL to IRL · Built for the ReachConf community</p>
+    </div>
+  </footer>
+
+  <script>
+    // ============================
+    // Real ReachConf content
+    // ============================
+
+    // Featured video IDs — excluded from main grid
+    const FEATURED_IDS = ['_4UPRmQ8awY', 'MyYixe6RS3M', 'uNkiZSwhZIE'];
+
+    const YOUTUBE_VIDEOS = [
+      { id: 'F4Fu6vZ0Qa4', title: 'ReachConf 2026 + Christian Game Developers Community', channel: 'Reach Conference', views: '51' },
+      { id: '_4UPRmQ8awY', title: 'Reach Conference 2026 Trailer', channel: 'Reach Conference', views: '26' },
+      { id: 'GaHsFC9asSQ', title: 'We Went To ReachConf 2025!', channel: 'BareHand', views: '49' },
+      { id: 'uNkiZSwhZIE', title: 'ReachConf Memories, Pics, Vids, Stuff, & Stories!', channel: 'Pastoring Creators | XtianNinja', views: '87' },
+      { id: 'x_VllkY1haI', title: 'ReachConf Is Over… Now What? 5 Things Christian Creators Should Do', channel: 'Pastoring Creators | XtianNinja', views: '42' },
+      { id: 'MyYixe6RS3M', title: 'Gabriel and the Guardians x Bearly Biblical Full ReachConf Panel', channel: 'Gabriel and the Guardians', views: '397' },
+      { id: 'r7DUMqwBJBo', title: 'The Calling Reach Trailer Debut @ ReachConf Reactions', channel: 'BuriedCandy', views: '136' },
+      { id: 'EOiawz-Txus', title: 'Online Friends Become Real Friends At ReachConf!', channel: 'FlatCapDapperPastor', views: '27' },
+      { id: 'g6ybnwRFmXw', title: 'ReachConf 2024 Episode 1 - Is There More to Life Than This?', channel: 'BGilbert85', views: '28' },
+      { id: 'qCcX6G_Xxvo', title: 'ReachConf 2024 Episode 2 - Who is Jesus?', channel: 'BGilbert85', views: '7' },
+      { id: 'lkC-MLEC0uQ', title: 'PGP Nitox vs Christian Gamers | ReachConf 2025 Super Smash Bros', channel: 'Prophetic Games Productions', views: '158' },
+      { id: 'qivSzoT1rd0', title: 'ReachConf 2025 - How to have a DAPPER stream', channel: 'FlatCapDapperPastor', views: '6' },
+      { id: 'b-QTB3_L1NI', title: 'Reach Conference: Get to know Kevin Palau', channel: 'Guardians Gold', views: '43' },
+      { id: '4vCMfpbr9oE', title: 'Why Reach Conference 2024 was a Game-Changer for Christian Content Creators', channel: 'FlatCapDapperPastor', views: '0' },
+      { id: 'LAwG--lPkCw', title: 'Christian Content Creators Unite at ReachConf', channel: 'Guardians Gold', views: '59' },
+      { id: '6SjMHiNn2Ic', title: 'Christian Gamer Shows God\'s Love Through Video Games', channel: 'Guardians Gold', views: '1262' },
+      { id: 'JevL0NY-sJM', title: 'ReachConf Rivals - Challengers of the Realm TCG Preview!', channel: 'Doodtacular', views: '2' },
+    ];
+
+    const TIKTOK_URLS = [
+      'https://www.tiktok.com/@guardiansgold/video/7411512102218714410',
+      'https://www.tiktok.com/@guardiansgold/video/7399668521782758698',
+      'https://www.tiktok.com/@xtianninja/video/7573390363465911569',
+    ];
+
+    const TWITTER_URLS = [
+      'https://x.com/AkiAndFam/status/1831789413548085743',
+      'https://x.com/AkiAndFam/status/1821248794241200361',
+      'https://x.com/PastorDoostyn/status/1986782083738403200',
+      'https://x.com/SylentBell/status/1987158636171317758',
+      'https://x.com/guardiansgold/status/1803759708920041925',
+    ];
+
+    // ============================
+    // State
+    // ============================
+    let allCards = [];
+    let activeFilter = 'all';
+
+    // ============================
+    // Lightbox
+    // ============================
+    function openLightbox(videoId) {
+      const lb = document.getElementById('lightbox');
+      const body = document.getElementById('lightboxBody');
+      body.innerHTML = '<iframe src="https://www.youtube.com/embed/' + videoId + '?autoplay=1&rel=0" class="w-full h-full absolute inset-0" frameborder="0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>';
+      body.classList.add('relative');
+      lb.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      const lb = document.getElementById('lightbox');
+      const body = document.getElementById('lightboxBody');
+      lb.classList.remove('active');
+      document.body.style.overflow = '';
+      setTimeout(function() { body.innerHTML = ''; }, 300);
+    }
+
+    function initLightbox() {
+      document.getElementById('lightboxBackdrop').addEventListener('click', closeLightbox);
+      document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+      document.addEventListener('keydown', function(e) {
+        if (e.code === 'Escape') closeLightbox();
+      });
+
+      // Featured section click handlers
+      document.getElementById('featuredMain').addEventListener('click', function() {
+        openLightbox(this.dataset.videoid);
+      });
+      document.querySelectorAll('.featured-side[data-videoid]').forEach(function(card) {
+        card.addEventListener('click', function() {
+          openLightbox(this.dataset.videoid);
+        });
+      });
+    }
+
+    // ============================
+    // Animated stat counters
+    // ============================
+    function initStatCounters() {
+      var section = document.getElementById('statsSection');
+      var animated = false;
+
+      var obs = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting && !animated) {
+            animated = true;
+            document.querySelectorAll('.stat-number[data-target]').forEach(function(el) {
+              var target = parseInt(el.dataset.target);
+              var duration = 1500;
+              var start = performance.now();
+
+              function tick(now) {
+                var elapsed = now - start;
+                var progress = Math.min(elapsed / duration, 1);
+                var eased = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.round(target * eased);
+                if (progress < 1) requestAnimationFrame(tick);
+              }
+              requestAnimationFrame(tick);
+            });
+            obs.disconnect();
+          }
+        });
+      }, { threshold: 0.3 });
+
+      obs.observe(section);
+    }
+
+    // ============================
+    // YouTube
+    // ============================
+    function fetchYouTube() {
+      return YOUTUBE_VIDEOS
+        .filter(function(v) { return !FEATURED_IDS.includes(v.id); })
+        .map(function(v) {
+          return {
+            platform: 'youtube',
+            id: v.id,
+            title: v.title,
+            channel: v.channel,
+            thumbnail: 'https://img.youtube.com/vi/' + v.id + '/hqdefault.jpg',
+            views: v.views
+          };
+        });
+    }
+
+    // ============================
+    // TikTok oEmbed
+    // ============================
+    async function fetchTikTokEmbed(url) {
+      try {
+        var res = await fetch('https://www.tiktok.com/oembed?url=' + encodeURIComponent(url));
+        if (!res.ok) throw new Error('TikTok oEmbed ' + res.status);
+        var data = await res.json();
+        return {
+          platform: 'tiktok',
+          title: data.title || 'TikTok Video',
+          channel: data.author_name || 'Unknown',
+          thumbnail: data.thumbnail_url,
+          html: data.html,
+          url: url
+        };
+      } catch (err) {
+        console.warn('TikTok oEmbed failed for', url, err);
+        var handle = url.split('@')[1];
+        return {
+          platform: 'tiktok',
+          title: 'ReachConf TikTok',
+          channel: handle ? handle.split('/')[0] : 'Creator',
+          thumbnail: null,
+          html: null,
+          url: url
+        };
+      }
+    }
+
+    async function fetchAllTikToks() {
+      return Promise.all(TIKTOK_URLS.map(fetchTikTokEmbed));
+    }
+
+    // ============================
+    // Twitter oEmbed
+    // ============================
+    async function fetchTwitterEmbed(url) {
+      try {
+        var res = await fetch('https://publish.twitter.com/oembed?url=' + encodeURIComponent(url) + '&omit_script=true&theme=dark');
+        if (!res.ok) throw new Error('Twitter oEmbed ' + res.status);
+        var data = await res.json();
+        return {
+          platform: 'twitter',
+          title: '',
+          channel: data.author_name || 'Unknown',
+          html: data.html,
+          url: url
+        };
+      } catch (err) {
+        console.warn('Twitter oEmbed failed for', url, err);
+        var handle = url.split('.com/')[1];
+        return {
+          platform: 'twitter',
+          title: '#ReachConf Tweet',
+          channel: handle ? handle.split('/')[0] : 'User',
+          html: null,
+          url: url
+        };
+      }
+    }
+
+    async function fetchAllTwitter() {
+      return Promise.all(TWITTER_URLS.map(fetchTwitterEmbed));
+    }
+
+    // ============================
+    // Rendering
+    // ============================
+    function formatNumber(n) {
+      var num = parseInt(n);
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toString();
+    }
+
+    function renderYouTubeCard(item) {
+      var div = document.createElement('div');
+      div.className = 'masonry-item fade-in';
+      div.dataset.platform = 'youtube';
+      div.innerHTML = '<div class="yt-card group rounded-xl overflow-hidden bg-dark-800 glow-border cursor-pointer" data-videoid="' + item.id + '">'
+        + '<div class="relative aspect-video overflow-hidden">'
+        + '<img src="' + item.thumbnail + '" alt="' + item.title.replace(/"/g, '&quot;') + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy">'
+        + '<div class="play-btn absolute inset-0 flex items-center justify-center bg-black/40">'
+        + '<div class="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center">'
+        + '<svg class="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'
+        + '</div></div>'
+        + '<span class="absolute top-2 left-2 badge-youtube text-white text-xs font-bold px-2 py-0.5 rounded">YouTube</span>'
+        + '</div>'
+        + '<div class="p-4">'
+        + '<h3 class="text-white font-semibold text-sm leading-snug mb-2 line-clamp-2">' + item.title + '</h3>'
+        + '<p class="text-gray-400 text-xs mb-2">' + item.channel + '</p>'
+        + '<div class="flex gap-3 text-xs text-gray-500"><span>' + formatNumber(item.views) + ' views</span></div>'
+        + '</div></div>';
+
+      div.querySelector('.yt-card').addEventListener('click', function() {
+        openLightbox(this.dataset.videoid);
+      });
+
+      return div;
+    }
+
+    function renderTikTokCard(item) {
+      var div = document.createElement('div');
+      div.className = 'masonry-item fade-in';
+      div.dataset.platform = 'tiktok';
+
+      if (item.html) {
+        div.innerHTML = '<div class="rounded-xl overflow-hidden bg-dark-800 glow-border">'
+          + '<div class="relative"><span class="absolute top-2 left-2 z-10 badge-tiktok text-white text-xs font-bold px-2 py-0.5 rounded">TikTok</span></div>'
+          + '<div class="tiktok-embed-container p-2">' + item.html + '</div>'
+          + '<div class="px-4 pb-3"><p class="text-gray-400 text-xs">@' + item.channel + '</p></div>'
+          + '</div>';
+      } else {
+        div.innerHTML = '<div class="rounded-xl overflow-hidden bg-dark-800 glow-border p-4">'
+          + '<span class="badge-tiktok text-white text-xs font-bold px-2 py-0.5 rounded mb-3 inline-block">TikTok</span>'
+          + (item.thumbnail ? '<img src="' + item.thumbnail + '" alt="' + item.title + '" class="w-full rounded-lg mb-3" loading="lazy">' : '')
+          + '<h3 class="text-white font-semibold text-sm mb-1">' + item.title + '</h3>'
+          + '<p class="text-gray-400 text-xs mb-3">@' + item.channel + '</p>'
+          + '<a href="' + item.url + '" target="_blank" rel="noopener" class="text-brand-orange text-xs hover:underline">Watch on TikTok &rarr;</a>'
+          + '</div>';
+      }
+      return div;
+    }
+
+    function renderTwitterCard(item) {
+      var div = document.createElement('div');
+      div.className = 'masonry-item fade-in';
+      div.dataset.platform = 'twitter';
+
+      if (item.html) {
+        div.innerHTML = '<div class="rounded-xl overflow-hidden bg-dark-800 glow-border">'
+          + '<div class="relative"><span class="absolute top-2 left-2 z-10 badge-twitter text-white text-xs font-bold px-2 py-0.5 rounded">Twitter</span></div>'
+          + '<div class="twitter-embed-container p-3">' + item.html + '</div>'
+          + '</div>';
+      } else {
+        div.innerHTML = '<div class="rounded-xl overflow-hidden bg-dark-800 glow-border p-4">'
+          + '<span class="badge-twitter text-white text-xs font-bold px-2 py-0.5 rounded mb-3 inline-block">Twitter</span>'
+          + '<h3 class="text-white font-semibold text-sm mb-1">' + (item.title || '#ReachConf') + '</h3>'
+          + '<p class="text-gray-400 text-xs mb-3">@' + item.channel + '</p>'
+          + '<a href="' + item.url + '" target="_blank" rel="noopener" class="text-brand-orange text-xs hover:underline">View on Twitter &rarr;</a>'
+          + '</div>';
+      }
+      return div;
+    }
+
+    // ============================
+    // Grid management
+    // ============================
+    function updateTabCounts() {
+      var ytCount = allCards.filter(function(c) { return c.dataset.platform === 'youtube'; }).length;
+      var ttCount = allCards.filter(function(c) { return c.dataset.platform === 'tiktok'; }).length;
+      var twCount = allCards.filter(function(c) { return c.dataset.platform === 'twitter'; }).length;
+
+      document.querySelectorAll('.tab-count').forEach(function(span) {
+        var p = span.dataset.platform;
+        if (p === 'youtube') span.textContent = '(' + ytCount + ')';
+        else if (p === 'tiktok') span.textContent = '(' + ttCount + ')';
+        else if (p === 'twitter') span.textContent = '(' + twCount + ')';
+      });
+    }
+
+    function renderGrid() {
+      var grid = document.getElementById('grid');
+      var empty = document.getElementById('emptyState');
+
+      grid.innerHTML = '';
+
+      var filtered = activeFilter === 'all'
+        ? allCards
+        : allCards.filter(function(c) { return c.dataset.platform === activeFilter; });
+
+      if (filtered.length === 0) {
+        empty.classList.remove('hidden');
+      } else {
+        empty.classList.add('hidden');
+        filtered.forEach(function(card, i) {
+          card.style.transitionDelay = (i * 80) + 'ms';
+          grid.appendChild(card);
+        });
+      }
+
+      updateTabCounts();
+      observeFadeIns();
+
+      if (window.twttr && window.twttr.widgets) {
+        window.twttr.widgets.load();
+      }
+    }
+
+    // ============================
+    // IntersectionObserver for fade-ins
+    // ============================
+    var observer;
+    function observeFadeIns() {
+      if (observer) observer.disconnect();
+      observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.fade-in:not(.visible)').forEach(function(el) { observer.observe(el); });
+    }
+
+    // ============================
+    // Filter tabs
+    // ============================
+    function initTabs() {
+      document.querySelectorAll('.tab').forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          document.querySelectorAll('.tab').forEach(function(t) {
+            t.classList.remove('tab-active');
+            t.classList.add('bg-dark-700', 'text-gray-400');
+          });
+          tab.classList.add('tab-active');
+          tab.classList.remove('bg-dark-700', 'text-gray-400');
+
+          activeFilter = tab.dataset.filter;
+          window.location.hash = activeFilter === 'all' ? '' : activeFilter;
+
+          allCards.forEach(function(c) { c.style.transitionDelay = '0ms'; });
+          allCards.forEach(function(c) { c.classList.remove('visible'); });
+          renderGrid();
+        });
+      });
+    }
+
+    function applyHashFilter() {
+      var hash = window.location.hash.replace('#', '');
+      if (['youtube', 'tiktok', 'twitter'].includes(hash)) {
+        activeFilter = hash;
+        document.querySelectorAll('.tab').forEach(function(t) {
+          t.classList.remove('tab-active');
+          t.classList.add('bg-dark-700', 'text-gray-400');
+          if (t.dataset.filter === hash) {
+            t.classList.add('tab-active');
+            t.classList.remove('bg-dark-700', 'text-gray-400');
+          }
+        });
+      }
+    }
+
+    // ============================
+    // Share button
+    // ============================
+    function initShare() {
+      document.getElementById('shareBtn').addEventListener('click', async function() {
+        var shareData = {
+          title: 'ReachConf Highlights',
+          text: 'Check out the highlights from ReachConf — From URL to IRL!',
+          url: window.location.href
+        };
+
+        if (navigator.share) {
+          try { await navigator.share(shareData); } catch(ex) {}
+        } else {
+          try {
+            await navigator.clipboard.writeText(window.location.href);
+            var btn = document.getElementById('shareBtn');
+            var original = btn.innerHTML;
+            btn.innerHTML = '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg> Copied!';
+            setTimeout(function() { btn.innerHTML = original; }, 2000);
+          } catch(ex) {
+            alert('Copy this link: ' + window.location.href);
+          }
+        }
+      });
+    }
+
+    // ============================
+    // Init
+    // ============================
+    async function init() {
+      initTabs();
+      initShare();
+      initLightbox();
+      initStatCounters();
+      applyHashFilter();
+
+      var ytData = fetchYouTube();
+      ytData.forEach(function(item) { allCards.push(renderYouTubeCard(item)); });
+
+      renderGrid();
+
+      var results = await Promise.all([fetchAllTikToks(), fetchAllTwitter()]);
+      var ttData = results[0];
+      var twData = results[1];
+
+      ttData.forEach(function(item) { allCards.push(renderTikTokCard(item)); });
+      twData.forEach(function(item) { allCards.push(renderTwitterCard(item)); });
+
+      allCards.sort(function() { return Math.random() - 0.5; });
+      renderGrid();
+
+      var twttrScript = document.createElement('script');
+      twttrScript.src = 'https://platform.twitter.com/widgets.js';
+      twttrScript.async = true;
+      document.body.appendChild(twttrScript);
+
+      var ttScript = document.createElement('script');
+      ttScript.src = 'https://www.tiktok.com/embed.js';
+      ttScript.async = true;
+      document.body.appendChild(ttScript);
+    }
+
+    window.addEventListener('hashchange', applyHashFilter);
+    init();
+  </script>
+</body>
+</html>
