@@ -252,6 +252,20 @@
     </div>
   </section>
 
+  <!-- Official @ReachConfLive Section -->
+  <section class="max-w-6xl mx-auto px-4 pt-6 pb-8">
+    <h2 class="font-display text-xl text-white mb-2 flex items-center gap-2">
+      <svg class="w-5 h-5 text-[#1da1f2]" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      From @ReachConfLive
+    </h2>
+    <p class="text-gray-500 text-sm mb-6">Official posts from the ReachConf team during the conference</p>
+    <div id="officialGrid" class="masonry">
+      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-48"></div></div>
+      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-40"></div></div>
+      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-44"></div></div>
+    </div>
+  </section>
+
   <!-- Filter Tabs -->
   <nav class="sticky top-0 z-50 bg-dark-900/90 backdrop-blur-md border-b border-dark-600">
     <div class="max-w-6xl mx-auto px-4 py-3 flex gap-2 overflow-x-auto">
@@ -364,6 +378,56 @@
       'https://www.tiktok.com/@xtianninja/video/7573390363465911569',
       'https://www.tiktok.com/@reachconflive/video/7548148374738930957',   // Official "What is REACH Conference?"
       'https://www.tiktok.com/@guardiansgold/video/7392979569751379246',   // Ministry promo w/ Kevin Palau
+    ];
+
+    const OFFICIAL_TWITTER_URLS = [
+      'https://x.com/i/status/1986068256000786499',
+      'https://x.com/i/status/1986068404114260462',
+      'https://x.com/i/status/1986106633978630505',
+      'https://x.com/i/status/1986146340577902922',
+      'https://x.com/i/status/1986192812077986264',
+      'https://x.com/i/status/1986269777908933092',
+      'https://x.com/i/status/1986291421444292940',
+      'https://x.com/i/status/1986299018532823446',
+      'https://x.com/i/status/1986426818123935875',
+      'https://x.com/i/status/1986430396926509411',
+      'https://x.com/i/status/1986431294394302963',
+      'https://x.com/i/status/1986447335455408545',
+      'https://x.com/i/status/1986463881103827347',
+      'https://x.com/i/status/1986472045236916281',
+      'https://x.com/i/status/1986478014125764776',
+      'https://x.com/i/status/1986494207855358164',
+      'https://x.com/i/status/1986507057999065583',
+      'https://x.com/i/status/1986516107541250557',
+      'https://x.com/i/status/1986525715869933756',
+      'https://x.com/i/status/1986533617959309737',
+      'https://x.com/i/status/1986539179862323257',
+      'https://x.com/i/status/1986558329695384047',
+      'https://x.com/i/status/1986649032865857704',
+      'https://x.com/i/status/1986789274482553036',
+      'https://x.com/i/status/1986804618353873232',
+      'https://x.com/i/status/1986804850026271081',
+      'https://x.com/i/status/1986816440113016842',
+      'https://x.com/i/status/1986830312693981335',
+      'https://x.com/i/status/1986870059772326230',
+      'https://x.com/i/status/1986871560691437704',
+      'https://x.com/i/status/1986877189187350582',
+      'https://x.com/i/status/1986888173834711378',
+      'https://x.com/i/status/1986890075188134049',
+      'https://x.com/i/status/1986891332342694338',
+      'https://x.com/i/status/1986951113103524000',
+      'https://x.com/i/status/1987041675093623238',
+      'https://x.com/i/status/1987178458829443265',
+      'https://x.com/i/status/1987178837394755606',
+      'https://x.com/i/status/1987180135443771517',
+      'https://x.com/i/status/1987213083199123750',
+      'https://x.com/i/status/1987214292639211597',
+      'https://x.com/i/status/1987392857292873966',
+      'https://x.com/i/status/1987487031526629482',
+      'https://x.com/i/status/1987499433177588089',
+      'https://x.com/i/status/1987518306643857629',
+      'https://x.com/i/status/1987573868505047061',
+      'https://x.com/i/status/1987632504963293423',
     ];
 
     const TWITTER_URLS = [
@@ -894,6 +958,16 @@
 
       allCards.sort(function() { return Math.random() - 0.5; });
       renderGrid();
+
+      // Official @ReachConfLive tweets
+      var officialEmbeds = await Promise.all(OFFICIAL_TWITTER_URLS.map(fetchTwitterEmbed));
+      var officialGrid = document.getElementById('officialGrid');
+      officialGrid.innerHTML = '';
+      officialEmbeds.forEach(function(item) {
+        var card = renderTwitterCard(item);
+        card.classList.add('visible');
+        officialGrid.appendChild(card);
+      });
 
       var twttrScript = document.createElement('script');
       twttrScript.src = 'https://platform.twitter.com/widgets.js';
