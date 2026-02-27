@@ -1,0 +1,4 @@
+name = "reachconf-highlights"
+compatibility_date = "2025-02-26"
+
+# Deploy: npx wrangler pages deploy . --project-name reachconf-highlights
