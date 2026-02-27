@@ -250,24 +250,10 @@
     </div>
   </section>
 
-  <!-- Official @ReachConfLive Section -->
-  <section class="max-w-6xl mx-auto px-4 pt-6 pb-8">
-    <h2 class="font-display text-xl text-white mb-2 flex items-center gap-2">
-      <svg class="w-5 h-5 text-[#1da1f2]" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      From @ReachConfLive
-    </h2>
-    <p class="text-gray-500 text-sm mb-6">Official posts from the ReachConf team during the conference</p>
-    <div id="officialGrid" class="masonry">
-      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-48"></div></div>
-      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-40"></div></div>
-      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-44"></div></div>
-    </div>
-  </section>
-
   <!-- Filter Tabs -->
   <nav class="sticky top-0 z-50 bg-dark-900/90 backdrop-blur-md border-b border-dark-600">
     <div class="max-w-6xl mx-auto px-4 py-3 flex gap-2 overflow-x-auto">
-      <button class="tab tab-active px-5 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap" data-filter="all">All</button>
+      <button class="tab tab-active px-5 py-2 rounded-full text-sm font-semibold transition-all whitespace-nowrap" data-filter="all">All Highlights</button>
       <button class="tab px-5 py-2 rounded-full text-sm font-semibold bg-dark-700 text-gray-400 hover:text-white transition-all whitespace-nowrap" data-filter="youtube">
         <span class="inline-block w-2 h-2 rounded-full bg-red-500 mr-1.5"></span>YouTube <span class="tab-count" data-platform="youtube"></span>
       </button>
@@ -282,7 +268,7 @@
 
   <!-- Content Grid -->
   <main class="max-w-6xl mx-auto px-4 py-8">
-    <div id="grid" class="masonry">
+    <div id="grid" class="space-y-6">
       <!-- Skeleton loaders -->
       <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-64"></div></div>
       <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-48"></div></div>
@@ -297,6 +283,23 @@
       <p class="text-gray-500 text-lg">No content found for this filter.</p>
     </div>
   </main>
+
+  <!-- Divider between community and official -->
+  <div class="max-w-6xl mx-auto px-4"><hr class="border-dark-600 my-4"></div>
+
+  <!-- Official @ReachConfLive Section -->
+  <section class="max-w-6xl mx-auto px-4 pt-6 pb-8">
+    <h2 class="font-display text-xl text-white mb-2 flex items-center gap-2">
+      <svg class="w-5 h-5 text-[#1da1f2]" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      From @ReachConfLive
+    </h2>
+    <p class="text-gray-500 text-sm mb-6">Official posts from the ReachConf team during the conference</p>
+    <div id="officialGrid" class="masonry">
+      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-48"></div></div>
+      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-40"></div></div>
+      <div class="masonry-item skeleton-card"><div class="skeleton rounded-xl h-44"></div></div>
+    </div>
+  </section>
 
   <!-- CTA Section -->
   <section class="relative overflow-hidden">
@@ -830,8 +833,9 @@
       });
     }
 
-    var communityShowCount = 30;
-    var COMMUNITY_PAGE_SIZE = 20;
+
+    var communityTwitterShow = 30;
+    var TWITTER_PAGE_SIZE = 20;
 
     function renderGrid() {
       var grid = document.getElementById('grid');
@@ -839,34 +843,96 @@
 
       grid.innerHTML = '';
 
-      var filtered = activeFilter === 'all'
-        ? allCards
-        : allCards.filter(function(c) { return c.dataset.platform === activeFilter; });
+      // Remove old load more button
+      var existingBtn = document.getElementById('loadMoreBtn');
+      if (existingBtn) existingBtn.remove();
 
-      if (filtered.length === 0) {
-        empty.classList.remove('hidden');
+      if (activeFilter === 'all') {
+        // Group by platform — each in its own masonry container
+        var youtube = allCards.filter(function(c) { return c.dataset.platform === 'youtube'; });
+        var tiktok = allCards.filter(function(c) { return c.dataset.platform === 'tiktok'; });
+        var twitter = allCards.filter(function(c) { return c.dataset.platform === 'twitter'; });
+
+        if (youtube.length === 0 && tiktok.length === 0 && twitter.length === 0) {
+          empty.classList.remove('hidden');
+        } else {
+          empty.classList.add('hidden');
+
+          // YouTube section
+          if (youtube.length > 0) {
+            var ytWrap = document.createElement('div');
+            ytWrap.className = 'masonry';
+            youtube.forEach(function(card, i) {
+              card.style.transitionDelay = (i * 80) + 'ms';
+              ytWrap.appendChild(card);
+            });
+            grid.appendChild(ytWrap);
+          }
+
+          // TikTok section
+          if (tiktok.length > 0) {
+            var ttWrap = document.createElement('div');
+            ttWrap.className = 'masonry';
+            tiktok.forEach(function(card, i) {
+              card.style.transitionDelay = (i * 80) + 'ms';
+              ttWrap.appendChild(card);
+            });
+            grid.appendChild(ttWrap);
+          }
+
+          // Twitter section (with load more)
+          if (twitter.length > 0) {
+            var twWrap = document.createElement('div');
+            twWrap.className = 'masonry';
+            var showing = twitter.slice(0, communityTwitterShow);
+            showing.forEach(function(card, i) {
+              card.style.transitionDelay = (i * 80) + 'ms';
+              twWrap.appendChild(card);
+            });
+            grid.appendChild(twWrap);
+
+            if (twitter.length > communityTwitterShow) {
+              var btn = document.createElement('button');
+              btn.id = 'loadMoreBtn';
+              btn.className = 'block mx-auto mt-6 px-6 py-2 bg-dark-700 text-gray-400 hover:text-white rounded-full text-sm font-semibold transition-colors';
+              btn.textContent = 'Load More Tweets (' + (twitter.length - communityTwitterShow) + ' remaining)';
+              btn.addEventListener('click', function() {
+                communityTwitterShow += TWITTER_PAGE_SIZE;
+                renderGrid();
+              });
+              grid.parentNode.insertBefore(btn, grid.nextSibling);
+            }
+          }
+        }
       } else {
-        empty.classList.add('hidden');
-        var showing = filtered.slice(0, communityShowCount);
-        showing.forEach(function(card, i) {
-          card.style.transitionDelay = (i * 80) + 'ms';
-          grid.appendChild(card);
-        });
+        // Single platform filter
+        var filtered = allCards.filter(function(c) { return c.dataset.platform === activeFilter; });
 
-        // Load More button
-        var existingBtn = document.getElementById('loadMoreBtn');
-        if (existingBtn) existingBtn.remove();
-
-        if (filtered.length > communityShowCount) {
-          var btn = document.createElement('button');
-          btn.id = 'loadMoreBtn';
-          btn.className = 'block mx-auto mt-8 px-6 py-2 bg-dark-700 text-gray-400 hover:text-white rounded-full text-sm font-semibold transition-colors';
-          btn.textContent = 'Load More (' + (filtered.length - communityShowCount) + ' remaining)';
-          btn.addEventListener('click', function() {
-            communityShowCount += COMMUNITY_PAGE_SIZE;
-            renderGrid();
+        if (filtered.length === 0) {
+          empty.classList.remove('hidden');
+        } else {
+          empty.classList.add('hidden');
+          var wrap = document.createElement('div');
+          wrap.className = 'masonry';
+          var limit = activeFilter === 'twitter' ? communityTwitterShow : filtered.length;
+          var showing = filtered.slice(0, limit);
+          showing.forEach(function(card, i) {
+            card.style.transitionDelay = (i * 80) + 'ms';
+            wrap.appendChild(card);
           });
-          grid.parentNode.insertBefore(btn, grid.nextSibling);
+          grid.appendChild(wrap);
+
+          if (activeFilter === 'twitter' && filtered.length > communityTwitterShow) {
+            var btn = document.createElement('button');
+            btn.id = 'loadMoreBtn';
+            btn.className = 'block mx-auto mt-6 px-6 py-2 bg-dark-700 text-gray-400 hover:text-white rounded-full text-sm font-semibold transition-colors';
+            btn.textContent = 'Load More Tweets (' + (filtered.length - communityTwitterShow) + ' remaining)';
+            btn.addEventListener('click', function() {
+              communityTwitterShow += TWITTER_PAGE_SIZE;
+              renderGrid();
+            });
+            grid.parentNode.insertBefore(btn, grid.nextSibling);
+          }
         }
       }
 
@@ -911,7 +977,7 @@
 
           activeFilter = tab.dataset.filter;
           window.location.hash = activeFilter === 'all' ? '' : activeFilter;
-          communityShowCount = 30;
+          communityTwitterShow = 30;
 
           allCards.forEach(function(c) { c.style.transitionDelay = '0ms'; });
           allCards.forEach(function(c) { c.classList.remove('visible'); });
@@ -965,16 +1031,6 @@
     // ============================
     // Init
     // ============================
-    function shuffleArray(arr) {
-      for (var i = arr.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
-      }
-      return arr;
-    }
-
     async function init() {
       initTabs();
       initShare();
@@ -999,8 +1055,6 @@
       ttData.forEach(function(item) { allCards.push(renderTikTokCard(item)); });
       twData.forEach(function(item) { allCards.push(renderTwitterCard(item)); });
 
-      // Shuffle once, then preserve order on filter switches
-      shuffleArray(allCards);
       renderGrid();
 
       // Official @ReachConfLive tweets (batched)
@@ -1008,7 +1062,7 @@
       var officialGrid = document.getElementById('officialGrid');
       officialGrid.innerHTML = '';
 
-      var OFFICIAL_INITIAL = 9;
+      var OFFICIAL_INITIAL = 6;
       var officialCards = [];
       officialEmbeds.forEach(function(item) {
         var card = renderTwitterCard(item);
